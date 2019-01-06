@@ -1,0 +1,36 @@
+package assignment1;
+import algs31.BinarySearchST;
+import stdlib.*;
+
+class ComputeARR {
+	
+	public static void main(String[] args) {
+		String[] star = { "********", "*******", "******", "*****", "****", "***", "**", "*"};
+		double[] rating = {4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0, 0.5};
+		//put in ST
+		algs31.BinarySearchST<String, Double> StarRating = new BinarySearchST<String, Double>();
+		for(int i = 0; i < star.length; i++) {
+			StarRating.put(star[i], rating[i]);
+		}
+		
+		//read file
+		StdIn.fromFile("data/a1ratings.txt");
+		String[] readStars = StdIn.readAllStrings();
+		double totalRating = 0.0;
+		
+		//match keys sum rating
+		for(int i = 0; i < readStars.length; i++) {
+			double readRating = StarRating.get(readStars[i]);
+			totalRating += readRating;
+		}
+		
+		//calc average
+		double avgrate = (totalRating/readStars.length);
+		StdOut.println("The restaurant received " + readStars.length + " ratings");
+		StdOut.println("And the average rating is : " + avgrate);
+		if(avgrate > 2.5) StdOut.println("Not bad!");
+		else StdOut.println("Could improve");
+			
+		
+	}
+}
