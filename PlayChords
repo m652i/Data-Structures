@@ -1,0 +1,41 @@
+package assignment1;
+import stdlib.*;
+import algs31.BinarySearchST;
+
+public class PlaySimpleChords {
+	
+	public static void playChord(double duration, double... frequencies) {
+		final int sliceCount = (int) (StdAudio.SAMPLE_RATE * duration);
+		final double[] slices = new double[sliceCount+1];
+		for (int i = 0; i <= sliceCount; i++) {
+			for (double frequency: frequencies) {
+				slices[i] += Math.sin(2 * Math.PI * i * frequency / StdAudio.SAMPLE_RATE);
+			}
+			slices[i] /= frequencies.length;
+		}
+		StdAudio.play(slices);
+	}
+	
+	
+	public static void main(String[] args) {
+		StdIn.fromFile("data/notes_frequencies.txt"); //is there a way to put the StdIn into a variable? 
+		//create separate string place in ST
+		algs31.BinarySearchST<String, Double> ChordsFreqT = new BinarySearchST<String, Double>();
+		while(StdIn.hasNextLine()) {
+			String currentline = StdIn.readLine();
+			String[] splited = currentline.split("\\s+");  // "\\s+" space
+			double frequency = Double.parseDouble(splited[1]);
+			ChordsFreqT.put(splited[0], frequency);
+		}
+		
+		StdIn.fromFile("data/sample_simple_chords.txt");
+		while(StdIn.hasNextLine()) {
+			String currline = StdIn.readLine();
+			String[] Splited = currline.split("\\s+");
+			double duration = Double.parseDouble(Splited[2]);
+			double Freq0 = ChordsFreqT.get(Splited[0]);
+			double Freq1 = ChordsFreqT.get(Splited[1]);
+			playChord(duration,Freq0,Freq1);
+		}
+	}
+}
